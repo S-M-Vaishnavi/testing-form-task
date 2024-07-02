@@ -43,6 +43,9 @@ const Education = ({ handleClick, currentStep, steps }) => {
     newData[index][field] = value;
     setEducationData(newData);
   };
+  console.log(educationData);
+  console.log(testScores);
+  console.log(licenseInfo);
 
   const handleCourseChange = (index, field, value) => {
     const newData = [...courseData];

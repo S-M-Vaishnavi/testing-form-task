@@ -2,6 +2,7 @@ import React from "react";
 import { useContext, useState,useEffect } from "react";
 import { StepperContext } from "../../contexts/StepperContext";
 import StepperControl from '../../StepperControl'; 
+import axios from "axios";
 
 const GeneralInformation = ({handleClick,currentStep,steps}) => {
   const { userData, setUserData } = useContext(StepperContext);
@@ -28,41 +29,75 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
   const validateInputs = () => {
     let newErrors = {};
     
-    if (!inputValues.fullName) newErrors.fullName = "Full name is required";
+    if (!inputValues.fullName) {
+        newErrors.fullName = "Full name is required";
+    } else if (!/^[a-zA-Z\s]+$/.test(inputValues.fullName) || inputValues.fullName.length < 3) {
+        newErrors.fullName = "Full name must be at least 3 characters long and contain only letters and spaces";
+    }
+    
     if (!inputValues.currentPhoneNumber) {
-      newErrors.currentPhoneNumber = "Phone Number is required";
+        newErrors.currentPhoneNumber = "Phone Number is required";
     } else if (!/^\d{10}$/.test(inputValues.currentPhoneNumber)) {
-      newErrors.currentPhoneNumber = 'Phone Number must be 10 digits';
+        newErrors.currentPhoneNumber = 'Phone Number must be 10 digits';
     }
-    if (!inputValues.currentFaxNumber) newErrors.currentFaxNumber = "Current Fax Number is required";
+    
+    if (!inputValues.currentFaxNumber) {
+        newErrors.currentFaxNumber = "Current Fax Number is required";
+    } else if (!/^\d{10}$/.test(inputValues.currentFaxNumber)) {
+        newErrors.currentFaxNumber = 'Fax Number must be 10 digits';
+    }
+    
     if (!inputValues.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(inputValues.email)) {
-      newErrors.email = 'Email is invalid';
+        newErrors.email = 'Email is required';
     }
-    if (!inputValues.positionDesired) newErrors.positionDesired = 'Position Desired is required';
-    if (!inputValues.presentSalary) {
-      newErrors.presentSalary = 'Present Salary is required';
-    } else if (isNaN(inputValues.presentSalary)) {
-      newErrors.presentSalary = 'Present Salary must be a number';
-    }
-    if (!inputValues.salaryDesired) {
-      newErrors.salaryDesired = 'Salary Desired is required';
-    } else if (isNaN(inputValues.salaryDesired)) {
-      newErrors.salaryDesired = 'Salary Desired must be a number';
-    }
-    if (!inputValues.startDate) newErrors.startDate = 'Start Date is required';
-    if (!inputValues.timePreference) newErrors.timePreference = 'Please select Part Time or Full Time';
-    if (!inputValues.everApplied) newErrors.everApplied = 'Please answer if you have ever applied before';
-    if (!inputValues.findWhere) newErrors.findWhere = 'Please specify how you found out about SB & Company, LLC';
-    if (!inputValues.legallyPermitted) newErrors.legallyPermitted = 'Please confirm if you are legally permitted to work';
-    if (!inputValues.status) newErrors.status = 'Please answer if you require sponsorship';
-    if (!inputValues.crime) newErrors.crime = 'Please answer if you have been convicted of a crime';
+    
     if (!inputValues.address) newErrors.address = "Address is required";
+    if (!inputValues.positionDesired) newErrors.positionDesired = 'Position Desired is required';
+    
+    if (!inputValues.presentSalary) {
+        newErrors.presentSalary = 'Present Salary is required';
+    } else if (isNaN(inputValues.presentSalary)) {
+        newErrors.presentSalary = 'Present Salary must be a number';
+    }
+    
+    if (!inputValues.salaryDesired) {
+        newErrors.salaryDesired = 'Salary Desired is required';
+    } else if (isNaN(inputValues.salaryDesired)) {
+        newErrors.salaryDesired = 'Salary Desired must be a number';
+    }
+    
+    if (!inputValues.startDate) {
+        newErrors.startDate = 'Start Date is required';
+    }
+    
+    if (!inputValues.timePreference) {
+        newErrors.timePreference = 'Please select Part Time or Full Time';
+    }
+    
+    if (!inputValues.everApplied) {
+        newErrors.everApplied = 'Please answer if you have ever applied before';
+    }
+    
+    if (inputValues.everApplied === 'Yes' && !inputValues.when) {
+        newErrors.when = 'Please specify when you applied before';
+    }
+    
+    if (!inputValues.findWhere) newErrors.findWhere = 'Please specify how you found out about SB & Company, LLC';
+    
+    if (!inputValues.legallyPermitted) {
+        newErrors.legallyPermitted = 'Please confirm if you are legally permitted to work';
+    }
+    if (!inputValues.status) {
+        newErrors.status = 'Please answer if you require sponsorship';
+    } 
+    
+    if (!inputValues.crime) {
+        newErrors.crime = 'Please answer if you have been convicted of a crime';
+    } 
     
     setErrors(newErrors);
     return newErrors;
-  };
+};
 
   useEffect(() => {
     setInputValues(userData);
@@ -76,15 +111,14 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
     setErrors(prevState => ({ ...prevState, [name]: '' }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length === 0) {
-      console.log(JSON.stringify(userData));
+      console.log(JSON.stringify(inputValues));
       handleClick("next", true);
     }
-  };
-
+};
   return (
     <form>
       <div className="flex flex-col">
@@ -193,14 +227,14 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase">yes</div>
           <div>
-            <input type="radio" value="yes"checked={inputValues.legallyPermitted === "yes"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
+            <input type="radio" value="yes" checked={inputValues.legallyPermitted === "yes"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
           </div>
         </div>
 
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase">No</div>
           <div>
-            <input type="radio" value="no"checked={inputValues.legallyPermitted === "no"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
+            <input type="radio" value="no" checked={inputValues.legallyPermitted === "no"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
           </div>
         </div>
       </div>
@@ -212,14 +246,14 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> yes</div>
           <div>
-            <input type="radio" checked={userData["status"]} onChange={handleChange} name="status" className="mb-4"/>
+            <input type="radio" value="yes" checked={inputValues.status === "yes"} onChange={handleChange} name="status" className="mb-4"/>
           </div>
         </div>
 
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> No</div>
           <div>
-            <input type="radio" checked={userData["status"]} onChange={handleChange} name="status" className="mb-4"/>
+            <input type="radio" value="no" checked={inputValues.status === "no"} onChange={handleChange} name="status" className="mb-4"/>
           </div>
         </div>
       </div>
@@ -231,14 +265,14 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> yes</div>
           <div>
-            <input type="radio" value="yes" checked={inputValues.legallyPermitted === "yes"} onChange={handleChange} name="crime" className="mb-4"/>
+            <input type="radio" value="yes" checked={inputValues.crime === "yes"} onChange={handleChange} name="crime" className="mb-4"/>
           </div>
         </div>
 
         <div className="flex gap-3 justify-center items-baseline mt-3">
           <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> No</div>
           <div>
-            <input type="radio" value="no" checked={inputValues.legallyPermitted === "no"} onChange={handleChange} name="crime" className="mb-4"/>
+            <input type="radio" value="no" checked={inputValues.crime === "no"} onChange={handleChange} name="crime" className="mb-4"/>
           </div>
         </div>
       </div>

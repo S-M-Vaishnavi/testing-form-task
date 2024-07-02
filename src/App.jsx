@@ -4,7 +4,7 @@ import { StepperContext } from './components/contexts/StepperContext';
 import Stepper from './components/Stepper';
 import GeneralInformation from './components/steps/GeneralInformation/GeneralInformation';
 import Education from './components/steps/Education/Education';
-import PreviousExperience from './components/steps/PreviousExperience/PreviousExperience';
+import ExperienceWrapper from './components/steps/ExperienceWrapper/ExperienceWrapper';
 import AdditionalQualification from './components/steps/AdditionalQualification/AdditionalQualification';
 import References from './components/steps/References/References';
 import BackGroundData from './components/steps/BackGroundData/BackGroundData';
@@ -30,7 +30,7 @@ function App() {
       case 2:
         return <Education handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 3:
-        return <PreviousExperience handleClick={handleClick} currentStep={currentStep} steps={steps} />;
+        return <ExperienceWrapper handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 4:
         return <PreviousExperienceContd handleClick={handleClick} currentStep={currentStep} steps={steps} />;
       case 5:

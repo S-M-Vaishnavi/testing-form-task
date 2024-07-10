@@ -169,8 +169,8 @@ const Stepper = ({ steps, currentStep }) => {
                         )}
                     </div>
 
-                    <div className={`absolute top-0 text-center mt-16 w-35 text-xs font-medium uppercase ${step.highlighted ? "text-gray-900" : "text-gray-400"}`}>
-                        {step.description}
+                    <div className={`absolute top-0 text-center mt-16 w-35 text-xs md:text-[9px] text-[9px] 2xl:text-xs font-medium uppercase ${step.highlighted ? "text-gray-900" : "text-gray-400"}`}>
+                         {step.description}
                     </div>
                 </div>
                 {index < steps.length - 1 && (
@@ -183,7 +183,7 @@ const Stepper = ({ steps, currentStep }) => {
     });
 
     return (
-        <div className='mx-4 p-4 flex justify-between items-center'>
+        <div className='mx-4 p-4 flex justify-between items-center md:py-5 px-0 mx-0'>
             {displaySteps}
         </div>
     );

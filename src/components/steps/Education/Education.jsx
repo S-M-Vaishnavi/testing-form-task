@@ -56,12 +56,15 @@ const Education = ({ handleClick, currentStep, steps }) => {
   const handleLicenseChange = (field, value) => {
     setLicenseInfo(prev => ({ ...prev, [field]: value }));
   };
-
+  // console.log(courseData);
+  // console.log(testScores);
+  // console.log(licenseInfo);
+  // console.log(activeStatus);
+  // console.log(JSON.stringify(educationData));
   const validateForm = () => {
     const newErrors = {};
     let isValid = true;
 
-    // Validate education data
     educationData.forEach((edu, index) => {
       if (edu.college && Object.values(edu).some(val => val === '')) {
         newErrors[`education${index}`] = 'Please fill all fields for this degree';
@@ -74,7 +77,6 @@ const Education = ({ handleClick, currentStep, steps }) => {
       isValid = false;
     }
 
-    // Validate course data
     courseData.forEach((course, index) => {
       if (Object.values(course).some(val => val !== '') && Object.values(course).some(val => val === '')) {
         newErrors[`course${index}`] = 'Please fill all fields for this course';
@@ -87,7 +89,6 @@ const Education = ({ handleClick, currentStep, steps }) => {
       isValid = false;
     }
 
-    // Validate test scores
     const testScoreGroups = [
       ['satVerbal', 'greVerbal', 'act'],
       ['satMath', 'greMath', 'lsat'],
@@ -101,13 +102,11 @@ const Education = ({ handleClick, currentStep, steps }) => {
       }
     });
 
-    // Validate license info
     if (Object.values(licenseInfo).some(val => val !== '') && Object.values(licenseInfo).some(val => val === '')) {
       newErrors.license = 'Please fill all fields for license information';
       isValid = false;
     }
 
-    // Validate active status
     if (activeStatus === '') {
       newErrors.activeStatus = 'Please select an active status';
       isValid = false;
@@ -133,6 +132,7 @@ const Education = ({ handleClick, currentStep, steps }) => {
       handleClick("next", true);
     }
   };
+  
 
   return (
     <div className="flex flex-col">

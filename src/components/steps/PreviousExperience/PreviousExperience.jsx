@@ -35,41 +35,55 @@ const PreviousExperience = ({ handleClick, currentStep, steps }) => {
     ]
   );
 
+
   const handleFromDataChange = (index, field, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].from[field] = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`fromData${index}`]: '' }));
+
   };
 
   const handleToDataChange = (index, field, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].to[field] = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`toData${index}`]: '' }));
+
   };
 
   const handleJobDataChange = (index, field, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].job[field] = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`jobData${index}`]: '' }));
+
   };
 
   const handleResponsibilitiesChange = (index, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].responsibilities = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`responsibilities${index}`]: '' }));
+
   };
 
   const handleReasonForLeavingChange = (index, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].reasonForLeaving = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`reasonForLeaving${index}`]: '' }));
+
   };
 
   const handleContactChange = (index, value) => {
     const newExperiences = [...preExperience];
     newExperiences[index].contact = value;
     setPreExperience(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`contact${index}`]: '' }));
   };
+
+  console.log(preExperience)
 
   const validateForm = () => {
     const newErrors = {};
@@ -108,6 +122,7 @@ const PreviousExperience = ({ handleClick, currentStep, steps }) => {
     setErrors(newErrors);
     return isValid;
   };
+  console.log(preExperience);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -124,6 +139,7 @@ const PreviousExperience = ({ handleClick, currentStep, steps }) => {
     <div className="flex flex-col">
       <h1 className="font-bold h-6 mt-3 text-gray-500 text-xs leading-5 uppercase">Previous Experience (Start with current or most recent employer)</h1>
       {preExperience.map((experience, index) => (
+        
         <div key={index} className="mb-10">
           <table className="table-auto border border-slate-500 mt-9">
             <thead>

@@ -2,11 +2,10 @@ import React from "react";
 import { useContext, useState,useEffect } from "react";
 import { StepperContext } from "../../contexts/StepperContext";
 import StepperControl from '../../StepperControl'; 
-import axios from "axios";
 
 const GeneralInformation = ({handleClick,currentStep,steps}) => {
   const { userData, setUserData } = useContext(StepperContext);
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState([{
     fullName: '',
     currentPhoneNumber: '',
     currentFaxNumber: '',
@@ -23,9 +22,8 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
     status: '',
     crime: '',
     timePreference: ''
-  });
+  }]);
   const [errors, setErrors] = useState({});
-
   const validateInputs = () => {
     let newErrors = {};
     
@@ -222,60 +220,32 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
       {errors.findWhere && <span className="text-red-500">{errors.findWhere}</span>}
 
 
-      <div className="flex gap-5 items-center">
-        <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">Are you legally permitted to work in this country</div>
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase">yes</div>
-          <div>
-            <input type="radio" value="yes" checked={inputValues.legallyPermitted === "yes"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
-          </div>
-        </div>
-
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase">No</div>
-          <div>
-            <input type="radio" value="no" checked={inputValues.legallyPermitted === "no"} onChange={handleChange} name="legallyPermitted" className="mb-4"/>
-          </div>
-        </div>
+      <div className="lg:flex">
+        <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase">Are you legally permitted to work in this country</div>
+            <div  className="ml-5">
+            <input type="radio" value="yes" checked={inputValues.legallyPermitted === "yes"} onChange={handleChange} name="legallyPermitted" className="ml-5 md:ml-0"/><span className="font-bold text-gray-500 text-xs uppercase">Yes</span>
+            <input type="radio" value="no" checked={inputValues.legallyPermitted === "no"} onChange={handleChange} name="legallyPermitted" className="ml-5"/><span className="font-bold text-gray-500 text-xs uppercase">No</span>
+            </div>
       </div>
       {errors.legallyPermitted && <span className="text-red-500">{errors.legallyPermitted}</span>}
 
-
-      <div className="flex gap-5 items-center">
-        <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase"> Will you now or in the future require sponsorship for employment visa status (e.g., H-1B visa status)</div>
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> yes</div>
-          <div>
-            <input type="radio" value="yes" checked={inputValues.status === "yes"} onChange={handleChange} name="status" className="mb-4"/>
-          </div>
+        <div className="lg:flex">
+        <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase md:leading-0 md:mt-0"> Will you now or in the future require sponsorship for employment visa status(e.g., H-1B visa status)</div>
+        <div className="flex items-baseline mt-2 md:-ml-[3px] lg:ml-0">
+            <input type="radio" value="yes" checked={inputValues.status === "yes"} onChange={handleChange} name="status" className="mb-4 ml-5"/><span className="font-bold text-gray-500 text-xs uppercase">Yes</span>
+            <input type="radio" value="no" checked={inputValues.status === "no"} onChange={handleChange} name="status" className="mb-4 ml-5"/><span className="font-bold text-gray-500 text-xs uppercase">No</span>
         </div>
-
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> No</div>
-          <div>
-            <input type="radio" value="no" checked={inputValues.status === "no"} onChange={handleChange} name="status" className="mb-4"/>
-          </div>
         </div>
-      </div>
+        
       {errors.status && <span className="text-red-500">{errors.status}</span>}
 
-
-      <div className="flex gap-5 items-center">
-        <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase"> Have you ever been convicted of a crime other than a minor traffic violation?</div>
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> yes</div>
-          <div>
-            <input type="radio" value="yes" checked={inputValues.crime === "yes"} onChange={handleChange} name="crime" className="mb-4"/>
-          </div>
+      <div className="lg:flex">
+        <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> Have you ever been convicted of a crime other than a minor traffic violation?</div>
+        <div className="ml-5">
+            <input type="radio" value="yes" checked={inputValues.crime === "yes"} onChange={handleChange} name="crime" className="md:ml-0" /><span className="font-bold text-gray-500 text-xs uppercase">Yes</span>
+            <input type="radio" value="no" checked={inputValues.crime === "no"} onChange={handleChange} name="crime" className="ml-5"/><span className="font-bold text-gray-500 text-xs uppercase">No</span>
         </div>
-
-        <div className="flex gap-3 justify-center items-baseline mt-3">
-          <div className="font-bold h-6 text-gray-500 text-xs leading-8 uppercase"> No</div>
-          <div>
-            <input type="radio" value="no" checked={inputValues.crime === "no"} onChange={handleChange} name="crime" className="mb-4"/>
-          </div>
         </div>
-      </div>
       {errors.crime && <span className="text-red-500">{errors.crime}</span>}
 
 
@@ -283,7 +253,10 @@ const GeneralInformation = ({handleClick,currentStep,steps}) => {
 
     <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase italic">Note: a criminal conviction is not an absolute bar to employment, but will be considered in relation to specific job requirements</div>
     </div>
+    <div className="md:mt-[70px]">
     <StepperControl handleClick={handleClick} handleSubmit={handleSubmit} currentStep={currentStep} steps={steps}/>
+
+    </div>
     </form>
     
   );

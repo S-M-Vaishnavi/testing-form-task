@@ -40,36 +40,47 @@ console.log(experiences);
     const newExperiences = [...experiences];
     newExperiences[index].from[field] = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`fromData${index}`]: '' }));
   }
 
   const handleToDataChange = (index, field, value) => {
     const newExperiences = [...experiences];
     newExperiences[index].to[field] = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`toData${index}`]: '' }));
+
   }
 
   const handleJobDataChange = (index, field, value) => {
     const newExperiences = [...experiences];
     newExperiences[index].job[field] = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`jobData${index}`]: '' }));
+
   }
 
   const handleResponsibilitiesChange = (index, value) => {
     const newExperiences = [...experiences];
     newExperiences[index].responsibilities = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`responsibilities${index}`]: '' }));
+
   }
 
   const handleReasonForLeavingChange = (index, value) => {
     const newExperiences = [...experiences];
     newExperiences[index].reasonForLeaving = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`reasonForLeaving${index}`]: '' }));
+
   }
 
   const handleContactChange = (index, value) => {
     const newExperiences = [...experiences];
     newExperiences[index].contact = value;
     setExperiences(newExperiences);
+    setErrors((prevErrors) => ({ ...prevErrors, [`contact${index}`]: '' }));
+
   }
 
   const validateForm = () => {
